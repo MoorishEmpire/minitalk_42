@@ -6,7 +6,7 @@
 #    By: ael-most <ael-most@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/24 15:21:00 by ael-most          #+#    #+#              #
-#    Updated: 2025/04/08 18:52:50 by ael-most         ###   ########.fr        #
+#    Updated: 2024/11/17 18:54:16 by ael-most         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,59 +14,39 @@
 ## VARIABLES ##
 ###############
 
-NAME = libft.a
+NAME = libftprintf.a
 CC = cc
 CCFLAGS = -Wall -Werror -Wextra
 CC_COMPILER_CALL = $(CC) $(CCFLAGS) 
-AR = ar
-ARFLAGS = rcs
+AR = ar rcs
 RM = rm -f
-HEADERS = libft.h
-GET_LINE_SRCS = \
-	get_next_line/get_next_line.c\
-	get_next_line/get_next_line_utils.c 
-FT_PRINTF_DIR = ft_printf
-FT_PRINTF_LIB = ft_printf/libftprintf.a
+HEADERS = ft_printf.h
 
 ###################
 #### MANDATORY ####
 ###################
 
-SRC = 	ft_isalpha.c ft_isdigit.c ft_isascii.c \
-		ft_isprint.c ft_strlen.c ft_memset.c \
-		ft_bzero.c ft_memcpy.c ft_memmove.c \
-		ft_strlcpy.c ft_strlcat.c ft_toupper.c \
-		ft_tolower.c ft_strchr.c ft_strrchr.c \
-		ft_strncmp.c ft_memchr.c ft_memcmp.c \
-		ft_isalnum.c ft_strnstr.c ft_atoi.c \
-		ft_calloc.c ft_strdup.c ft_substr.c \
-		ft_strjoin.c ft_strtrim.c ft_split.c \
-		ft_itoa.c ft_strmapi.c ft_striteri.c \
-		ft_putchar_fd.c ft_putstr_fd.c \
-		ft_putendl_fd.c ft_putnbr_fd.c
+SRC = ft_printf.c ft_specifier.c \
+	  conversions_src/ft_putchar.c conversions_src/ft_putstr.c \
+	  conversions_src/ft_putnbr.c conversions_src/ft_putnbr_unsigned.c \
+	  conversions_src/ft_putnbr_hex.c conversions_src/ft_putptr.c
 
 OBJ = $(SRC:.c=.o)
-GET_LINE_OBJS = $(GET_LINE_SRCS:.c=.o)
 
 #############
 ## TARGETS ##
 #############
 
 clean:
-	@make clean -C $(FT_PRINTF_DIR)
-	@$(RM) $(OBJ) $(GET_LINE_OBJS)
+	$(RM) $(OBJ)
 
 all: $(NAME)
 
-$(FT_PRINTF_LIB) :
-	@make -C $(FT_PRINTF_DIR)
-
-$(NAME): $(OBJ) $(GET_LINE_OBJS) $(FT_PRINTF_LIB)
-	@$(AR) $(ARFLAGS) $(FT_PRINTF_LIB) $@ $^
+$(NAME): $(OBJ)
+	$(AR) $@ $^
 
 fclean: clean
-	@make fclean -C $(FT_PRINTF_DIR)
-	@$(RM) $(NAME)
+	$(RM) $(NAME)
 
 re: fclean all
 
@@ -75,7 +55,7 @@ re: fclean all
 ################
 
 %.o : %.c $(HEADERS)
-	@$(CC_COMPILER_CALL) -c $< -o $@
+	$(CC_COMPILER_CALL) -c $< -o $@
 
 ###############
 #### PHONY ####
